@@ -13,5 +13,6 @@ This is a simple script to turn on the cardless mode for the container instance 
 ## Run
 
 `python autodl.py --account <account> --password <password> --time <time>`
+- time: the time(hours) to release the container instance
 
-eg: `python autodl.py --account 123456789 --password 123456 --time 3` is to turn on the cardless mode for the container instance that will be released in 6 hours. Then shut down the container immediately.
+eg: `python autodl.py --account 123456789 --password 123456 --time 3` is to turn on the cardless mode for the container instance that will be released in 3 hours. Then shut down the container immediately.
