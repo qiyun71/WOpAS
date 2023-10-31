@@ -41,7 +41,7 @@ def main(account, pwd, headless = True, remain_thre=6):
         page.get_by_placeholder("请输入手机号").fill(account)
         page.get_by_placeholder("请输入密码").fill(pwd)
         page.wait_for_timeout(1000)
-        page.screenshot(path="AutoDL.png")
+        # page.screenshot(path="AutoDL.png")
         page.get_by_role("button", name="登录", exact=True).click()
         
         # 进入容器实例
