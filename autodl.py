@@ -52,19 +52,35 @@ def main(account, pwd, headless = True, remain_thre=6):
         # 选中即将释放的实例
         table = page.locator(".el-table__row")
         text_table = table.all_text_contents()
-        print(len(text_table))
+        print(f"==>共有{len(text_table)}个实例")
+        # print(text_table)
 
-        pattern = re.compile(r"\d+天\d+小时后释放")
-        for i,string in enumerate(text_table):
+        # for i,string in enumerate(text_table):
+        #     pattern = re.compile(r"\d+天\d+小时后释放")
+        #     match = re.search(pattern, string)
+        #     # print(i, match.group(),match) # 0 14天23小时后释放 <re.Match object; span=(83, 93), match='14天23小时后释放'>
+        #     remain_time = match.group()
+        #     remain_day = int(remain_time.split("天")[0])
+        #     # print(remain_day)
+        #     if remain_day <= remain_thre:
+        #         # print(i,  remain_time)
+        #         start_wogpu_shutdown(page,remain_time)
+        counts = 0
+        pattern = re.compile(r"\d+小时\d+分\d+秒后释放")
+        for i in range(len(text_table)):
+            string = text_table[i]
             match = re.search(pattern, string)
-            # print(i, match.group())
+            if match is None:
+                continue
+            else:
+                counts += 1
+                table = page.locator(".el-table__row")
+                text_table = table.all_text_contents()
+            # print(i, match)
             remain_time = match.group()
-            remain_day = int(remain_time.split("天")[0])
-            # print(remain_day)
-            if remain_day <= remain_thre:
-                # print(i,  remain_time)
-                start_wogpu_shutdown(page,remain_time)
+            start_wogpu_shutdown(page,remain_time)
 
+        print(f"==>共重启了{counts}个实例")
         page.pause()
         browser.close()
 
@@ -72,7 +88,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--account', type=str, default="Phone number", help='AutoDL account')
     parser.add_argument('--pwd', type=str, default="Password", help='AutoDL password')
-    parser.add_argument('--time', type=int, default=6, help='The threshold of remaining time')
+    # parser.add_argument('--time', type=int, default=6, help='The threshold of remaining time')
     args, _ = parser.parse_known_args()
 
-    main(args.account, args.pwd, headless = False, remain_thre=args.time)
+    # main(args.account, args.pwd, headless = False, remain_thre=args.time)
+    main(args.account, args.pwd, headless = False)
