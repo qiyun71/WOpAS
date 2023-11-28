@@ -69,17 +69,18 @@ def main(account, pwd, headless = True, remain_thre=6):
         pattern = re.compile(r"\d+小时\d+分\d+秒后释放")
         for i in range(len(text_table)):
             string = text_table[i]
+            print(string)
             match = re.search(pattern, string)
             if match is None:
                 continue
-            else:
-                counts += 1
-                table = page.locator(".el-table__row")
-                
-            text_table = table.all_text_contents()
             # print(i, match)
             remain_time = match.group()
             start_wogpu_shutdown(page,remain_time)
+            print(f"==第{i}个实例保留成功")
+            counts += 1
+            table = page.locator(".el-table__row")
+            text_table = table.all_text_contents()
+
 
         print(f"==>共重启了{counts}个实例")
         page.pause()
